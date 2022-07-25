@@ -1,0 +1,491 @@
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+map gc <Plug>Commentary
+map gcc <Plug>CommentaryLine
+Plug 'majutsushi/tagbar'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'altercation/vim-colors-solarized'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'jiangmiao/auto-pairs'
+Plug 'bfrg/vim-cpp-modern'
+"Plug 'vim-scripts/a.vim'
+Plug 'chxuan/cppfun'
+Plug 'airblade/vim-gitgutter'
+Plug 'rking/ag.vim'
+Plug 'mbbill/undotree'
+Plug 'tommcdo/vim-lion'
+Plug 'machakann/vim-highlightedyank'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/gv.vim'
+Plug 'junegunn/limelight.vim'
+  nmap <Leader>l <Plug>(Limelight)
+  xmap <Leader>l <Plug>(Limelight)
+  nnoremap <Leader>ll :Limelight<cr>
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() }}
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'junegunn/vim-easy-align'
+"Plug 'alvan/vim-closetag'
+Plug 'vim-airline/vim-airline'
+"Plug 'valloric/youcompleteme'
+"Plug 'rip-rip/clang_complete'
+"Plug 'lervag/vimtex'
+"Plug 'godlygeek/tabular'
+"Plug 'preservim/vim-markdown'
+Plug 'dyng/ctrlsf.vim'
+Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-signify'
+Plug 'elzr/vim-json'
+Plug 'zivyangll/git-blame.vim'
+"Plug 'Shougo/vimshell.vim'
+call plug#end()
+
+"==============================================
+"
+"==============================================
+set number
+set relativenumber
+set autoindent
+set smartindent
+set lazyredraw
+set laststatus=2
+set showcmd
+set backspace=indent,eol,start
+set timeoutlen=500
+set whichwrap=b,s
+set shortmess=aIT
+set hlsearch " CTRL-L / CTRL-R W
+set incsearch
+set hidden
+set ignorecase smartcase
+set wildmenu
+set wildmode=full
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab smarttab
+set scrolloff=5
+set encoding=utf-8
+set list
+set listchars=tab:\|\ ,
+set virtualedit=block
+set nojoinspaces
+set diffopt=filler,vertical
+set autoread
+set clipboard=unnamed
+set foldlevelstart=3
+set grepformat=%d:%l:%c:%m,%f:%l:%m
+set completeopt=menuone,preview
+set nocursorline
+set nrformats=hex
+
+set modelines=2
+set synmaxcol=1000
+set tags=./tags,tags,./.tags,.tags;
+
+set nostartofline
+set nobackup
+set noswapfile
+set complete-=i
+set splitright
+set splitbelow
+
+set ffs=unix,dos,mac
+set tabpagemax=100
+set preserveindent
+set clipboard=unnamed
+set copyindent
+
+syntax on
+
+syntax enable
+
+"set foldmethod=syntax
+"set foldlevel=1
+filetype plugin on
+filetype indent on
+" for bash script
+"let g:sh_fold_enabled=5
+"let g:is_sh=1
+"set filetype=on
+set foldmethod=syntax
+
+autocmd BufRead,BufNewFile *.cpp,*.cc,*.c setlocal foldmethod=syntax
+autocmd FileType cpp setlocal foldmethod=expr foldexpr=getline(v:lnum)=~'^\\s*//'.&commentstring[0]
+
+colo seoul256
+set background=dark
+"colorscheme solarized
+
+" Disable Replace mode
+imap <Insert> <NOP>
+inoremap <S-Insert> <Insert>
+
+set textwidth=0
+set colorcolumn=80
+highlight ColorColumn ctermbg=95 guibg=#8787ff
+set mouse=a
+
+fun! s:EightyLine()
+if !exists('w:eightyline')
+    let w:eightyline = 1
+    :set colorcolumn=80
+    :highlight ColorColumn ctermbg=105 guibg=#8787ff
+else
+    unl w:eightyline
+    :set colorcolumn=80
+    :highlight ColorColumn NONE
+endif
+endfunction
+
+nnoremap <Leader>h :call<SID>EightyLine()<cr>
+
+function! s:statusline_expr()
+    let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+    let ro = "%{&readonly ? '[RO] ': ''}"
+    let ft = "%{len(&filetype) ? '['.&filetype.'] ': ''}"
+    let sep = '%= '
+    let pos = ' %-12(%l : %c%V%) '
+    let pct = ' %P'
+    return '[%n] %F %<'.mod.ro.ft.sep.pos.'%*'.pct
+endfunction
+
+let &statusline = s:statusline_expr()
+
+function! s:autosave(enable)
+    augroup autosave
+        autocmd!
+        if a:enable
+            autocmd TextChanged,InsertLeave <buffer>
+                        \ if empty(&buftype) && !empty(bufname(''))
+                        \| silent! update
+                        \| endif
+        endif
+    augroup END
+endfunction
+
+command! -bang AutoSave call s:autosave(<bang>1)
+
+"function s:ForbidReplace()
+"    if v:insertmode isnot# 'i'
+"        call feedkeys("\<Insert>", "n")
+"    endif
+"endfunction
+"augroup ForbidReplaceMode
+"    autocmd!
+"    autocmd InsertEnter * call s:ForbidReplace()
+"    autocmd InsertChange * call s:ForbidReplace()
+"augroup END
+
+"===========================================
+"
+"===========================================
+inoremap <C-Q> <esc>:wq<cr>
+nnoremap <C-Q> :wq<cr>
+vnoremap <C-Q> <esc>
+nnoremap <Leader>Q :qa!<cr>
+
+nnoremap <C-]> g<C-]>
+nnoremap g[ :pop<cr>
+
+nnoremap <C-p> <C-i>
+
+nnoremap <silent> <C-l> :nohl<C-R><C-l>
+
+" Plugin NERD tree
+nnoremap <leader>n :NERDTreeFocus<cr>
+"nnoremap <C-n> :NERDTree<CR>
+nnoremap <F9> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
+
+autocmd VimEnter * NERDTree | wincmd p
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+nnoremap <F8> :TagbarToggle<cr>
+
+let g:limelight_paragraph_span=1
+let g:limelight_priority = -1
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_default_coefficient = 0.7
+
+let g:limelight_bop = '^\s'
+let g:limelight_eop = '\ze\n^\s'
+
+function! s:goyo_enter()
+  if has('gui_running')
+    set fullscreen
+    set background=light
+    set linespace=7
+  elseif exists('$TMUX')
+    silent !tmux set status off
+  endif
+  Limelight
+  let &l:statusline = '%M'
+  hi StatusLine ctermfg=red guifg=red cterm=NONE gui=NONE
+endfunction
+
+function! s:goyo_leave()
+  if has('gui_running')
+    set nofullscreen
+    set background=dark
+    set linespace=0
+  elseif exists('$TMUX')
+    silent !tmux set status on
+  endif
+  Limelight!
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+let g:goyo_width = 180
+let g:goyo_margin_top = 0
+let g:goyo_margin_bottom = 0
+nnoremap <Leader>G :Goyo<cr>
+
+" Plugin better whitespace
+let g:better_whitespace_ctermcolor='green'
+let g:better_whitespace_enabled=1
+"let g:better_whitespace_on_save=1
+
+" Plugin auto pairs
+let g:AutoPairsFlyMode=0
+let g:AutoPairsShortcutBackInsert='<M-b>'
+let g:AutoPairsShortcutToggle='<M-p>'
+let g:AutoPairsShortcutFastWrap='<M-e>'
+let g:AutoPairsShortcutJump='<M-n>'
+
+" Plugin undotree
+nnoremap <F5> :UndotreeToggle<CR>
+
+function! Multiple_cursors_before()
+    call AutoPairsToggle()
+endfunction
+
+function! Multiple_cursors_after()
+    call AutoPairsToggle()
+endfunction
+
+" Plug vim fugitive
+"nnoremap <Leader>g :Git<Cr>gg<c-n>
+nnoremap <Leader>d :Gdiff<CR>
+nnoremap <Leader>gb :Git blame<CR>
+
+" Plug splitjoin
+let g:splitjoin_split_mapping=''
+let g:splitjoin_join_mapping=''
+nnoremap gss :SplitjoinSplit<cr>
+nnoremap gsj :SplitjoinJoin<cr>
+
+" Plug vim highlightedyank
+let g:highlightedyank_highlight_duration=1000
+
+" Plug cpp modern
+let g:cpp_attributes_highlight=1
+let g:cpp_member_highlight=1
+
+" Plug vim-signify
+set updatetime=100
+
+" Plug vim-easy-align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+au! BufRead,BufNewFile *json set filetype=json
+
+" json
+"augroup json_autocmd
+"    autocmd!
+"    autocmd FileType json autoindent
+"    autocmd FileType json set formatoptions=tcq2l
+"    autocmd FileType json set textwidth=78 shiftwidth=2
+"    autocmd FileType json set softtabstop=2 tabstop=8
+"    autocmd FileType json expandtab
+"    autocmd FileType json set foldmethod=syntax
+"augroup END
+
+" Plug fzf
+"let g:fzf_layout = {'window': {'width': 0.9, 'height': 0.6, 'relative': v:true}}
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+let g:fzf_buffers_jump = 1
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+let g:fzf_tags_command = 'ctags -R'
+let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+function! s:align_lists(lists)
+    let maxes = {}
+    for list in a:lists
+        let i = 0
+        while i < len(lists)
+            let maxes[i] = max([get(maxes, i, 0), len(lists[i])])
+            let i += 1
+        endwhile
+    endfor
+    for list in a:lists
+        call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
+    endfor
+    return a:lists
+endfunction
+
+function! s:btags_source()
+    let lines = map(split(system(printf(
+                \ 'ctags -f --sort=no --excmd=number --language-force=%s %s',
+                \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
+    if v:shell_error
+        throw 'failed to extract tags'
+    endif
+    return map(s:align_lists(lines), 'join(v:val, "\t")')
+endfunction
+
+function! s:btags_sink(line)
+    execute split(a:line, "\t")[2]
+endfunction
+
+function! s:btags()
+    try
+        call fzf#run({
+                    \ 'source': s:btags_source(),
+                    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+                    \ 'down': '40%',
+                    \ 'sink': function('s:btags_sink')})
+    catch
+        echohl WarningMsg
+        echohl v:exception
+        echohl None
+    endtry
+endfunction
+
+command! BTags call s:btags()
+
+" Plug clang-complete
+let g:clang_library_path="/usr/lib/llvm-9/lib/libclang.so.1"
+
+nnoremap <C-g> :Ag<CR>
+nnoremap <C-f> :FZF<CR>
+nnoremap <C-p> :GFiles<CR>
+nnoremap <silent><Leader>hh :History<CR>
+nnoremap <silent><Leader>bb :Buffers<CR>
+nnoremap <silent><Leader>a :Files<CR>
+nnoremap <silent><Leader>g :Commits<CR>
+
+inoremap jk <Esc>
+xnoremap jk <Esc>
+cnoremap jk <C-c>
+
+"nnoremap <Esc> <Esc> :w<cr>
+
+nnoremap <leader><space> :nohl<cr>
+
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+
+"nnoremap ]t :tabn<cr>
+"nnoremap [t :tabp<cr>
+
+inoremap <C-h> <C-o>h
+inoremap <C-l> <C-o>l
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+
+nnoremap <tab> <c-w>w
+nnoremap <S-tab> <c-w>W
+
+vmap <C-/> :norm s:^://<CR>
+
+
+" tab mappings
+nnoremap <C-t> :tabnew<Space>
+noremap <C-Tab> :<C-U>tabnext<CR>
+nnoremap <C-S-Tab> :<C-U>tabprevious<CR>
+nnoremap th :tabfirst<CR>
+nnoremap tj :tabnext<CR>
+nnoremap tk :tabprevious<CR>
+nnoremap tl :tablast<CR>
+
+" split mappings
+nnoremap gh <C-W><C-H>
+nnoremap gj <C-W><C-J>
+nnoremap gk <C-W><C-K>
+nnoremap gl <C-W><C-L>
+nnoremap g\ <C-W><C-V>
+nnoremap g- <C-W><C-S>
+
+nnoremap <F3> :set invpaste paste?<CR>
+set pastetoggle=<F3>
+set showmode
+
+" custom definition abbrevitation
+function! EatChar(pat)
+    let c = nr2char(getchar(0))
+    return (c =~ a:pat) ? '' : c
+endfunc
+
+iabbrev <silent> #i #include ""<Left><C-R>=EatChar('\s')<CR>
+iabbrev <silent> #I #include <><Left><C-R>=EatChar('\s')<CR>
+iabbrev inio #include <iostream><CR>
+iabbrev invt #include <vector><CR>
+iabbrev #d #define<Right>
+iabbrev psvm public static void main
+iabbrev syso System.out.println();
+iabbrev im int main(int argc, char **argv)<CR>{<CR>return 0;}<CR>
+iabbrev ifelse if ()<CR>{<CR>}<CR>else<CR>{<CR><C-O>?}<CR>
+iabbrev stdstr std::string
+iabbrev switch switch ()<CR>{<CR>default:<CR>break;}
+iabbrev <silent> fori for(int i = 0;i < count; ++i)<CR>{}<Up>
+iabbrev <silent> fora for(auto x: container)<Left>
+iabbrev <silent> forit for(iterator it = .begin(); < .end(); ++it)<CR>{<CR>}
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+   if &paste
+       return 'PASTE MODE  '
+   else
+       return ''
+   endif
+endfunction
+
+
+:map <F2> :echo 'Current time is ' . strftime('%c')<CR>
+
+" compile cpp
+function! CPPSET()
+    nnoremap <buffer> <F9> :w<cr> :!g++ -o %< % && ./%< <cr>
+    nnoremap <buffer> <F10> :w<cr> :!g++ -o %< % <cr> :!./%< < test.inp <cr>
+endfunction
+
+autocmd FileType cpp call CPPSET()
+autocmd FileType cc call CPPSET()
+
+" run python
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python' shellescape(@%, 1)<CR>
