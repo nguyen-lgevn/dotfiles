@@ -1,0 +1,102 @@
+[alias]
+    ai = add -i
+    au = add -u
+    brr = branch -avv
+    #######################################
+    brn = !git branch | grep ^* | cut -d' ' -f2
+    br = branch -avv
+    brd = branch -d
+    brdd = branch -D
+    #######################################
+    co = checkout
+    cob = checkout -b
+    st = status --untracked-files=no -s
+    stn = status -uno
+    stf = status -uno -s | awk '{print $2}'
+    #######################################
+    dno = diff --name-only
+    dns = diff --name-status --oneline
+    dh = diff HEAD
+    #######################################
+    cp = cherry-pick
+    cpc = cherry-pick --continue
+    cpa = cherry-pick --abort
+    #######################################
+    cl = clean -dfx
+    #######################################
+    cm = commit
+    cma = commit --amend
+    who = shortlog -s --
+    last = log -1 HEAD
+    lg = log --color --decorate-refs-exclude=refs/tags --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
+    work = log --color --decorate-refs-exclude=refs/tags --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    find = !sh -c git lg --grep="$@"
+    srch = !sh -c 'git grep "$@" $(git rev-list --all)'
+    #######################################
+    rmt = remote
+    rmv = remote -v
+    rms = remote show
+    #######################################
+    fe = fetch
+    #######################################
+    me = merge
+    mea = merge --abort
+    mec = merge --continue
+    mes = merge --skip
+    #######################################
+    rb = rebase
+    rba = rebase --abort
+    rbc = rebase --continue
+    rbs = rebase --skip
+    rbi = rebase --interactive
+    #######################################
+    #######################################
+    stl = stash list
+    stp = stash pop
+    std = stash drop
+    stc = stash clear
+    stw = stash show
+    #######################################
+    sto = show --stat --oneline
+    snt = show --name-status --oneline
+    #######################################
+    rs = reset
+    rh = reset HEAD
+    rsh = reset --hard
+    rss = rset --soft
+[commit]
+        template = ~/.gittemplate
+[core]
+        editor = vim
+        pager = less -FRSX
+        excludesFile = ~/.gitignore
+[color]
+    ui = auto
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[color "status"]
+    add = green bold
+    change = yellow bold
+    untracked = red bold
+[delta]
+    features = line-numbers decorations
+    line-numbers = true
+[delta "decorations"]
+    minus-style = red bold normal
+    plus-style = green bold normal
+    minus-emph-style = white bold red
+    minus-non-emph-style = red bold normal
+    plus-emph-style = white bold green
+    plus-non-emph-style = green bold normal
+    minus-empty-line-marker-style = normal normal
+    plus-empty-line-marker-style = normal normal
+[diff]
+    #tool = vimdiff
+[merge]
+        tool = vimdiff
+        conflictstyle = diff3
+

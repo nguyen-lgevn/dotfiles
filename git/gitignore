@@ -1,0 +1,20 @@
+.git
+tags
+TAGS
+Build
+build
+*.pyc
+*.o
+*.so
+
+
+# Packages #
+*.7z
+*.dmg
+*.gz
+*.tar
+*.zip
+
+# Log #
+*.log
+
