@@ -17,6 +17,7 @@
     dno = diff --name-only
     dns = diff --name-status --oneline
     dh = diff HEAD
+    dw = diff --color-words
     #######################################
     cp = cherry-pick
     cpc = cherry-pick --continue
