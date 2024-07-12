@@ -1,0 +1,32 @@
+{
+    "init": {
+        "prefix": "init",
+        "body": [
+            "cmake_minimum_required(VERSION 3.20)",
+            "project(${1:ProjectName})\n",
+            "add_executable($1)"
+        ],
+        "description": "Code snippet to init cmake file"
+    },
+    "include": {
+        "prefix": "inc",
+        "body": [
+            "include_directories(${${0:include_dir}})"
+        ],
+        "description": "Code snippet to include directory"
+    },
+    "bin": {
+        "prefix": "bin",
+        "body": [
+            "add_executable(${1:bin} ${${0:src}})"
+        ],
+        "description": "Code snippet to build binary"
+    },
+    "lib": {
+        "prefix": "lib",
+        "body": [
+            "add_library(${1:lib} ${${0:src}})"
+        ],
+        "description": "Code snippet to build library"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "hello": {
+        "prefix": "hello",
+        "body": ["print('Hello, World!')"],
+        "description": "print Hello, World!"
+    },
+    "Main entry point": {
+		"prefix": "main",
+		"body": [
+			"def ${1:main()}:",
+			"\t$0",
+			"",
+			"",
+			"if __name__ == '__main__':",
+			"\t${1:main()}"
+		],
+		"description": "Call entry point function if this script is run directly"
+	}
+}

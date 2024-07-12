@@ -1,0 +1,37 @@
+{
+    "name": "example-snippets",
+    "author": "",
+    "description": "Code snippets",
+    "engines": {
+        "vscode" : "^1.11.0"
+    },
+    "categories": ["Snippets", "Progamming Languages"],
+    "contributes": {
+        "snippets" : [
+            {
+                "language": "all",
+                "path": "./all.json"
+            },
+            {
+                "language": "c",
+                "path": "./c.json"
+            },
+            {
+                "language": "python",
+                "path": "./python.json"
+            },
+            {
+                "language": "cpp",
+                "path": "./cpp.json"
+            },
+            {
+                "language": "tex",
+                "path": "./tex.json"
+            },
+            {
+                "language": "cmake",
+                "path": "./cmake.json"
+            }
+        ]
+    }
+}

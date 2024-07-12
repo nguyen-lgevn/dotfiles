@@ -1,0 +1,9 @@
+{
+    "document class": {
+        "prefix": "dcl",
+        "body": [
+            "\\documentclass{${1:class}} ${0}"
+        ],
+        "description": "Code snippet for document class"
+    }
+}

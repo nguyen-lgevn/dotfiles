@@ -1,0 +1,37 @@
+{
+	"speed up": {
+		"prefix": "speed",
+		"body": [
+			"std::io_base::sync_with_stdio(false);",
+			"std::cin.tie(nullptr);",
+			"std::cout.tie(nullptr);"
+		],
+		"description": "speed up code in cpp "
+	},
+	"read vector": {
+		"prefix": "getvector",
+		"body": [
+			"std::vector<int> v(n);",
+			"for(int i = 0; i < n; i++) {",
+			"\tstd::cin >> v[i];",
+			"}"
+		],
+		"description": "read vector from stdio input"
+	},
+	"get testcase": {
+	    "prefix": "tcase",
+	    "body": [
+	        "int T;",
+	        "std::cin >> T;",
+	        "while(T--) {",
+	        "\tsolve();",
+	        "}"
+	    ],
+	    "description": ""
+	}, 
+	"example": {
+	    "prefix": "trigger",
+	    "body": [""],
+	    "description": ""
+	},
+}

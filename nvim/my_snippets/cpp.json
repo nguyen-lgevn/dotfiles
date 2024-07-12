@@ -1,0 +1,234 @@
+{
+    "main": {
+        "prefix": "main",
+        "body": [
+            "int main(int argc, char *argv[]) {",
+            "   return 0;",
+            "}"
+        ],
+        "description": "generate main function"
+    },
+    "sieve": {
+        "prefix" : "sieve",
+        "body": [
+            "void sieve() {",
+            "for(int i = 0; i < n; i++)",
+            "}"
+        ],
+        "description": ""
+    },
+    "read test case": {
+        "prefix": "tcase",
+        "body": [
+            "int T;",
+            "std::cin >> T;",
+            "while(T--) {",
+            "   solve()",
+            "}"
+        ],
+        "description": "read test case from io"
+    },
+    "speed up": {
+        "prefix": "speed",
+        "body": [
+            "std::ios_base::sync_with_stdio(false);",
+            "std::cin.tie(nullptr);",
+            "std::cout.tie(nullptr);"
+        ],
+        "description": "speed up read/write from io"
+    },
+    "binary search": {
+        "prefix": "binarysearch",
+        "body": [
+            "int l, r",
+            "while (l < r) {",
+            "   int mid = (l+r) >> 1;",
+            "}"
+        ],
+        "description": "binary search"
+    },
+    "dfs": {
+        "prefix": "dfs",
+        "body": [
+            "void dfs(int curr, std::vector<std::vector<int>>& adj, std::vector<int>& visited) {",
+            "\tvisited[curr] = true;",
+            "\tfor(auto e: adj[curr]) {",
+            "\t\tif(!visited[e]){",
+            "\t\t\tdfs(e, adj, visited);",
+            "\t\t}",
+            "\t}",
+            "}"
+        ],
+        "description": "depth first search"
+    },
+    "usestd": {
+        "prefix": "usestd",
+        "body": [
+            "using namespace std;",
+            ""
+        ],
+        "description": "using namespace std"
+    },
+    "usell": {
+        "prefix": "usell",
+        "body": [
+            "using ll = long long;",
+            ""
+        ],
+        "description": "define long long type"
+    },
+    "switch": {
+        "prefix": "switch",
+        "body": [
+            "switch($1) {",
+            "default:",
+            "\tbreak;",
+            "}"
+        ],
+        "description": "switch case"
+    },
+    "while loop": {
+        "prefix": "while",
+        "body": [
+            "while ( $1 ) {",
+            "\t$2",
+            "}"
+        ],
+        "description": "while loop"
+    },
+    "for loop auto": {
+        "prefix": "fora",
+        "body": [
+            "for (auto &$1: $2) {",
+            "\t",
+            "}"
+        ],
+        "description": "for loop auto"
+    },
+	"if": {
+		"prefix": "if",
+		"body": [
+			"if ($1)",
+			"{",
+			"	$2",
+			"}"
+		],
+		"description": "Code snippet for if statement"
+	},
+	"else": {
+		"prefix": "else",
+		"body": [
+			"else",
+			"{",
+			"	$1",
+			"}"
+		],
+		"description": "Code snippet for else statement"
+	},
+	"else if": {
+		"prefix": "else if",
+		"body": [
+			"else if ($1)",
+			"{",
+			"	$2",
+			"}"
+		],
+		"description": "Code snippet for else-if statement"
+	},
+	"class": {
+	    "prefix": "class",
+	    "body": [
+	        "class ${1:MyClass} {",
+            "public:",
+            "\t$1 ();",
+            "\t~$1 ();",
+            "private:",
+            "\t$2",
+	        "};"
+	    ],
+	    "description": "Code snippet for class"
+	},
+	"singleton": {
+	    "prefix": "singleton",
+	    "body": [
+	        "class ${1:SingletonClass} {",
+            "public:",
+            "\t$1& getInstance() {",
+            "\t\tstatic $1 ins;",
+            "\t\treturn ins;",
+            "\t}\n",
+            "\t$1 (const $1& ) = delete;",
+            "\t$1 operator=(const $1& ) = delete;",
+            "\t~$1(){}",
+            "private:",
+            "\t$1 () {}",
+	        "};"
+	    ],
+	    "description": "Code snippet for singleton class"
+	},
+	"#ifdef": {
+		"prefix": "#ifdef",
+		"body": [
+			"#ifdef ${DEBUG}",
+			"$1",
+			"#endif // ${DEBUG}"
+		],
+		"description": "Code snippet for #ifdef"
+	},
+	"#ifndef": {
+		"prefix": "#ifndef",
+		"body": [
+			"#ifndef ${1:1}",
+			"$2",
+			"#endif // !$1"
+		],
+		"description": "Code snippet for #ifndef"
+	},
+	"#if": {
+		"prefix": "#if",
+		"body": [
+			"#ifdef ${1:0}",
+			"$2",
+			"#endif // $1"
+		],
+		"description": "Code snippet for #if"
+	},
+	"cout": {
+		"prefix": "cout",
+		"body": [
+			"std::cout << \"${1:/* message */}\" << std::endl;"
+		],
+		"description": "Code snippet for printing to std::cout, provided the header is set"
+	},
+	"#inc": {
+		"prefix": "#inc",
+		"body": [
+			"#include \"$1\""
+		],
+		"description": "Code snippet for #include \" \""
+	},
+	"#inc<": {
+		"prefix": "#inc<",
+		"body": [
+			"#include <$1>"
+		],
+		"description": "Code snippet for #include \" \""
+	},
+	"#def": {
+		"prefix": "#def",
+		"body": [
+			"#define \"$1\" \"$2\" "
+			],
+		"description": "Code snippet for #define \" \""
+	},
+	"begin time": {
+	    "prefix": "begintime",
+	    "body": [
+            "std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();",
+            "$1",
+            "std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();",
+            "std::cout << \"Time difference = \" << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << \"[ms]\" << std::endl;"
+	    ],
+	    "description": "Code snippet for elapsed time"
+	}
+}
