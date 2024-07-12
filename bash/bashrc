@@ -256,3 +256,13 @@ fawk() {
     eval $cmd
 }
 
+show_directory_stat() {
+    echo -e "$(find . -mindepth 1 -maxdepth 1 -type d | wc -l) directories"
+    echo -e "$(find . -mindepth 1 -maxdepth 1 -type f | wc -l) files"
+    echo -e "$(find . -mindepth 1 -maxdepth 1 -type l | wc -l) symlinks"
+}
+
+
+alias cd2='cd ../..'
+alias cd3='cd ../../..'
+alias cd4='cd ../../../..'
